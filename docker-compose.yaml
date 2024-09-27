@@ -1,0 +1,39 @@
+services:
+  apache_php:
+    container_name: Php_apache
+    image: webdevops/php-apache
+    ports: 
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /Users/jorel/Desktop/Docker_OPC/PHP/app:/app
+      - /Users/jorel/Desktop/Docker_OPC/Config/etc:/opt/docker/etc
+    networks:
+      - localdev
+  mysql:
+    container_name: Mysql
+    image: mysql
+    ports: 
+      - "3306:3306"
+    volumes:
+      - /Users/jorel/Desktop/Docker_OPC/MYSQL/DATA:/var/lib/mysql
+    networks:
+      - localdev
+    environment: 
+      MYSQL_ROOT_PASSWORD: 123user
+  phpmyadmin:
+    container_name: Php-Myadmin
+    image: phpmyadmin
+    ports: 
+      - "8088:80"
+    environment:
+      - PMA_HOSTS=mysql
+    networks:
+      - localdev
+
+networks:
+  localdev:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
